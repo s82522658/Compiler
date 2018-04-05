@@ -1,0 +1,19 @@
+Section 8.  Lex and Yacc. 
+
+(The original file is at http://dinosaur.compilertools.net/lex/index.html)
+
+If you want to use Lex with Yacc, note that what Lex writes is a program named yylex(), the name required by Yacc for its analyzer. Normally, the default main program on the Lex library calls this routine, but if Yacc is loaded, and its main program is used, Yacc will call yylex(). In this case each Lex rule should end with 
+
+                               return(token);
+
+
+where the appropriate token value is returned. An easy way to get access to Yacc's names for tokens is to compile the Lex output file as part of the Yacc output file by placing the line # include "lex.yy.c" in the last section of Yacc input. Supposing the grammar to be named ``good'' and the lexical rules to be named ``better'' the UNIX command sequence can just be: 
+
+
+                             yacc good
+                             lex better
+                             cc y.tab.c -ly -ll
+
+
+The Yacc library (-ly) should be loaded before the Lex library, to obtain a main program which invokes the Yacc parser. The generations of Lex and Yacc programs can be done in either order. 
+--
